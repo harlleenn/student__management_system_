@@ -1,0 +1,66 @@
+.registerCont {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.register{
+background-color: rgb(235, 239, 241);
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+   border-width: 1px;
+  border-style: solid;
+  border-color: rgba(111, 106, 117, 0.604);
+}
+input {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgb(223, 229, 229);
+  box-sizing: border-box;
+}
+button {
+  background-color: black;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  
+}
+label{
+    color: rgb(0, 0, 0);
+    font-size:medium;
+    font-weight: 200;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;
+    align-items: center; */
+  margin: 10x;
+  width: 300px;
+  gap:20px
+}
+.heading {
+  font-size: x-large;
+  font-weight: 400;
+}
+.error{
+    font-size: larger;
+    color: red;
+    background-color: azure;
+    padding: 10px;
+}
+.errorMessage{
+  color: red;
+  font-weight: 500;
+}

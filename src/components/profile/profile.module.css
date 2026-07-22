@@ -1,0 +1,75 @@
+.logoutCont {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(222, 229, 222);
+  width: auto;
+  justify-content: end;
+  margin-bottom: 10px;
+  padding: 14px;
+}
+.logoutBtn {
+  width: auto;
+  cursor: pointer;
+  background-color: rgb(78, 46, 7);
+}
+.options {
+  position: absolute;
+  top: 50px;
+  padding: 10px;
+  background-color: rgb(249, 249, 249);
+  display: flex;
+  flex-direction: column;
+  
+  width: 200px;
+  height: 100px;
+}
+
+.option {
+  background-color: rgb(81, 49, 18);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+
+}
+.option:hover {
+  background-color: azure;
+}
+.logoutModal {
+  position: fixed;
+  background-color: rgb(5, 144, 37);
+  right: 600px;
+  top: 200px;
+  border-radius: 10px;
+  width: 400px;
+  height: 300px;
+}
+.logoutInner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.logoutBtns {
+  display: flex;
+  flex-direction: row;
+
+  width: fit-content;
+  gap: 10px;
+}
+.cancelbtns{
+    background-color: rgb(255, 255, 255);
+    color: black;
+    font-size: small;
+    padding-inline: 30px;
+}
+.logbtns{
+  
+    background-color: #000000;
+    color: w;
+    font-size: small;
+    padding-inline: 30px;
+
+}

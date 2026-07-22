@@ -1,0 +1,9 @@
+.inputContainer{
+    display: inline-flex;
+    width: 20rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    height: 10rem;
+    margin-bottom: 10px;
+}

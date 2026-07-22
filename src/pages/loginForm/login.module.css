@@ -1,0 +1,77 @@
+.loginCont {
+  display: flex;
+ flex-direction: column;
+ justify-content: center;
+ min-height: 100vh;
+}
+.forgetPass{
+  display: flex;
+flex-direction: column;
+  gap: 10px;
+}
+.login{
+
+   background-color: rgb(201, 211, 215);
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(111, 106, 117, 0.604);
+}
+
+input {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgb(223, 229, 229);
+  box-sizing: border-box;
+}
+button {
+  background-color: black;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center;
+    align-items: center; */
+  margin: 10px;
+  gap: 20px;
+  width: 300px;
+}
+.heading {
+  font-size: x-large;
+  font-weight: 400;
+}
+
+label {
+  color: rgb(0, 0, 0);
+}
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  /* font-display: block; */
+  font-weight: 300;
+  font-size: larger;
+}
+.loginError {
+  font-size: larger;
+  color: red;
+  
+  padding: 10px;
+}

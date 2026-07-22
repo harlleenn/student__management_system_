@@ -1,0 +1,81 @@
+.studentDisplay {
+  background-color: rgb(120, 19, 19);
+}
+.tableDisplay {
+  display: flex;
+  overflow: scroll;
+}
+.sidebar{
+  
+  position: absolute;
+  left: 10px;
+}
+.actionCont {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.updatedForm {
+  position: absolute;
+  top: 100px;
+}
+table,
+th,
+td {
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #d8d8d8;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #1a795a;
+  color: white;
+  font-size: medium;
+  font-weight: 300;
+}
+.deleteBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  border-radius: 5px;
+  background-color: rgba(199, 44, 44, 0.921);
+  color: rgb(241, 239, 239);
+  font-size: small;
+  cursor: pointer;
+  border-color: #000000;
+}
+.deleteBtn:hover {
+  background-color: rgba(255, 2, 2, 0.921);
+}
+.editBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.register {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.deletedToast {
+  background-color: red;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.editedToast {
+  background-color: #010e0a;
+}
+
+table {
+  height: 40rem;
+  width: 80rem;
+}

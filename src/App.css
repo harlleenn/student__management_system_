@@ -1,0 +1,33 @@
+body{
+  display: flex;
+  background-color: rgb(238, 234, 234);
+  justify-content: center;
+  align-content: center;
+  height: screen;
+ align-items: center;
+ 
+ font-family: Arial ,sans-serif;
+}
+
+
+.Toastify__toast-theme--light.Toastify__toast--success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.Toastify__toast-theme--light.Toastify__toast--error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.Toastify__toast-theme--light.Toastify__toast--warning {
+  background-color: #c71010;
+  color: #f1f1f1;
+}
+.Toastify__toast-theme--light.Toastify__toast--info {
+  background-color: #22b804;
+  color: #ffffff;
+}
+
+
+

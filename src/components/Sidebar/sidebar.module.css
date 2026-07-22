@@ -1,0 +1,41 @@
+.sidebarCont {
+  height: 50rem;
+  width: 20rem;
+
+  display: flex;
+}
+.contents {
+  flex-direction: column;
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  background-color: rgb(226, 224, 222);
+  margin-top: 10px;
+  transition: 800ms;
+}
+
+.dashboard {
+  padding: 5px;
+}
+
+.user {
+  padding: 5px;
+}
+
+.innerDash,
+.innerInvite {
+  margin-top: 10px;
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  background-color: aliceblue;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.innerDash:hover,
+.innerInvite:hover {
+  background-color: rgb(171, 170, 170);
+}
