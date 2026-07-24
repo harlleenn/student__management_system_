@@ -16,6 +16,7 @@ export default function Popup() {
         position: "top-center",
       });
       console.log(response.data.message);
+      
     } catch (error) {
       console.log(error);
       toast.error("There was an error please try again", {
@@ -45,6 +46,7 @@ export default function Popup() {
               name="userRole"
               id="admin"
               checked={userRole === "Admin"}
+              required
               onChange={(e) => setUserRole(e.target.value)}
             />
             <label htmlFor="viewer">Viewer</label>
@@ -54,6 +56,7 @@ export default function Popup() {
               name="userRole"
               id="viewer"
               checked={userRole === "Viewer"}
+               required
               onChange={(e) => setUserRole(e.target.value)}
             />
             <label htmlFor="editor">Editor</label>
@@ -63,6 +66,7 @@ export default function Popup() {
               name="userRole"
               id="editor"
               checked={userRole === "Editor"}
+               required={true}
               onChange={(e) => setUserRole(e.target.value)}
             />
           </div>

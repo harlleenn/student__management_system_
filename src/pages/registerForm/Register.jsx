@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./register.module.css";
 
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useSearchParams } from "react-router";
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,12 +11,33 @@ export default function Register() {
   const [error, setError] = useState("")
   const [messageError , setMessageError] = useState("")
   const [emailError, setEmailError] = useState("")
-
-  
+  const [userRoleData,setUserRoleData] = useState("")
+const [searchParams] = useSearchParams()
+const emailValue = searchParams.get('email')
+console.log(emailValue)
+  useEffect(() => {
+    const fetchInvite = async () => {
+    try{
+      const response = await axios.get(`http://localhost:8000/invite-user?email=${emailValue}`)
+      setEmail(response.data.email)
+      setUserRoleData(response.data.userRole)
+      console.log(response.data)
+      console.log(response.data.userRole, "this is the role that i am getting in response")
+      console.log(response.data.email, "this i sthe emialalal")
+    }catch(error){
+      toast.error("there was an eror")
+    }
+   
+  }
+  if(emailValue){
+     fetchInvite()
+  }
+ 
+},[emailValue])
 const handleSubmit = (e) => {
   console.log("")
     e.preventDefault()
-      const registerData = {name , email , password}
+      const registerData = {name , email , password, userRoleData}
     axios.post("http://localhost:8000/auth/register", registerData)
       .then((response) => {
       setEmail("")
@@ -47,18 +69,30 @@ const handleSubmit = (e) => {
 
   return (
     <div className={styles.registerCont}>
+    
        <div className={styles.register}>
         
       <div className={styles.heading}>Register</div>
       <form onSubmit={() => handleSubmit()}>
        
-        <div>
-          <label>Name*</label>
+        <div className={styles.nameRoleCont}>
+          <div className={styles.nameRole}>
+              <label>Name*</label>
           <input placeholder="Enter name" 
            value={name}
           onChange={(e) => setName(e.target.value)}
-          
           required/>
+          </div>
+        <div className={styles.nameRole}>
+          <label>Role</label>
+          <input disabled 
+          placeholder="role"
+          value={userRoleData}/>
+        </div>
+          
+        </div>
+        <div>
+       
         </div>
         {/* <div className={styles.errorMessage}>{messageError}</div> */}
         <div>
@@ -67,9 +101,10 @@ const handleSubmit = (e) => {
           type="email"
            value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled
+        />
           
-          required/>
-
         </div>
              {/* <div className={styles.errorMessage}>{emailError}</div> */}
         <div>

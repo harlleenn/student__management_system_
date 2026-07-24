@@ -64,3 +64,15 @@ form {
   color: red;
   font-weight: 500;
 }
+.nameRole{
+  display: flex;
+  flex-direction: column;
+  
+  justify-content: center;
+  width: 100%;
+}
+.nameRoleCont{
+  display: flex;
+  display: row;
+  gap: 5px;
+}

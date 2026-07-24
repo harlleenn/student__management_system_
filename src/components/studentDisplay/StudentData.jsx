@@ -158,6 +158,7 @@ useEffect(() => {
     }, 500);
     return () => clearTimeout(timeoutId);
   }, [query]);
+  
 
   const handleDelete = (id) => {
     axios.delete(`http://localhost:8000/students/${id}`, {}).then(() => {
