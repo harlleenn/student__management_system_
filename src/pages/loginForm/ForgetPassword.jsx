@@ -43,9 +43,12 @@ export default function ForgetPassword({handleClick}) {
                 <input 
                 placeholder='Enter your email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}/>
-                
-                <button  type='submit' >Done</button>
+                onChange={(e) => setEmail(e.target.value)}
+                required/>
+                <div>
+                    <button type='submit' >Done</button>
+                </div>
+              
             </form>
         </div> 
       
