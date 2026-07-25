@@ -7,7 +7,7 @@
 .register{
 background-color: rgb(235, 239, 241);
   border-radius: 10px;
-  padding: 20px;
+  padding: 30px;
   width: 300px;
   height: 400px;
   display: flex;
@@ -21,7 +21,7 @@ background-color: rgb(235, 239, 241);
 input {
   padding: 15px;
   display: flex;
-  gap: 10px;
+  gap: 20px;
   border-width: 2px;
   border-style: solid;
   border-color: rgb(223, 229, 229);
@@ -37,22 +37,22 @@ button {
   
 }
 label{
-    color: rgb(0, 0, 0);
-    font-size:medium;
+    color: rgb(84, 84, 84);
+    font-size:14px;
     font-weight: 200;
 }
 form {
   display: flex;
   flex-direction: column;
-  /* justify-content: center;
-    align-items: center; */
+
   margin: 10x;
   width: 300px;
   gap:20px
 }
 .heading {
-  font-size: x-large;
+  font-size: 20px;
   font-weight: 400;
+  margin-bottom: 10px;
 }
 .error{
     font-size: larger;
@@ -75,4 +75,5 @@ form {
   display: flex;
   display: row;
   gap: 5px;
+  margin-top: 10px;
 }

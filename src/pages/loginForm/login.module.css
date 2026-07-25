@@ -8,12 +8,27 @@
   display: flex;
 flex-direction: column;
   gap: 10px;
+  justify-content: flex-start;
+  
+  margin-top: 10px;
+}
+.forgetPassCont{
+  
+  justify-content: center;
+  display: flex;
+  margin-top: 10px;
+
+}
+.forgetLink{
+    text-decoration: none;
+  color: inherit;
+
 }
 .login{
 
-   background-color: rgb(201, 211, 215);
+  background-color: rgb(235, 239, 241);
   border-radius: 10px;
-  padding: 20px;
+  padding: 30px;
   width: 300px;
   height: 400px;
   display: flex;

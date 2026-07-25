@@ -32,7 +32,7 @@ export default function Popup() {
     <div>
       <ToastContainer />
       <div className={styles.popupCont}>
-        <form className={styles.popupForm}>
+        <form className={styles.popupForm} onSubmit={handleInvite}>
           <input
             placeholder="Enter email"
             value={email}
@@ -71,7 +71,7 @@ export default function Popup() {
             />
           </div>
 
-          <button onClick={handleInvite}>Done</button>
+          <button type="submit">Done</button>
         </form>
       </div>
     </div>

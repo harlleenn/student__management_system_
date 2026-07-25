@@ -71,10 +71,13 @@ const handleClick = () => {
       </form>
       {error && <div className={styles.loginError}>{error}</div>}
 <div className={styles.forgetPass}>
-     <div className={styles.forgetPass}>
+     <div>
         Don't have an account? <a href="/register">Sign up here</a>
       </div>
-     <a href="/forget-password"><button onClick={handleClick}>Forget Password</button></a> 
+      <div className={styles.forgetPassCont}>
+         <a href="/forget-password" className={styles.forgetLink}><button onClick={handleClick}>Forget Password</button></a> 
+      </div>
+    
 </div>
    
     </div>
