@@ -15,7 +15,7 @@ import {
 import SearchInput from "../searchInput/SearchInput";
 import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
-
+// when in search go back why no students
 export default function StudentData() {
   const [students, setStudents] = useState([]);
   const [mode, setMode] = useState(null);
@@ -28,6 +28,7 @@ export default function StudentData() {
   const scrollContainerRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [lengthMessage, setLengthMessage] = useState("")
 const loadingRef = useRef(false);
 const hasMoreDataRef = useRef(true)
 useEffect(() => {
@@ -52,6 +53,9 @@ useEffect(() => {
       } else {
         setHasMoreData(true);
       }
+      if(response.data.length === 0){
+        setLengthMessage("No such student found ")
+      }//when search back show data
 
       if (appendMore) {
         setStudents((prev) => [...prev, ...response.data]);
@@ -239,6 +243,8 @@ useEffect(() => {
               </td>
             </tr>
           ))}
+          <div className={styles.lengthMessage}> {lengthMessage}</div>
+         
         </tbody>
       </table>
 

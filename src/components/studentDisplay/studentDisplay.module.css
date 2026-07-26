@@ -32,10 +32,11 @@ td {
 }
 
 th {
-  background-color: #1a795a;
+  background-color: #0b7753;
   color: white;
   font-size: medium;
   font-weight: 300;
+  
 }
 .deleteBtn {
   display: flex;
@@ -78,4 +79,11 @@ th {
 table {
   height: 40rem;
   width: 80rem;
+}
+.lengthMessage{
+  background-color: #1a795a;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 100px;
 }

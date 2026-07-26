@@ -151,6 +151,7 @@ app.get("/students", authenticateToken, (req, res) => {
   const term = `%${search}%`;
 
   db.query(sql, [term, term, term, limit, offset], (err, results) => {
+    
     if (err) {
       return res
         .status(500)
