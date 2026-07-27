@@ -250,8 +250,9 @@ app.post("/auth/login", loginLimiter, (req, res) => {
 
       if (results.length === 0)
         return res.status(401).json({ message: "User not found" });
-
+ 
       const user = results[0]; // array of results first object
+     
       if (user.lock_until && new Date(user.lock_until) > new Date()) {
         return res.status(403).json({
           message: "Account locked. please try again later.",
@@ -326,9 +327,16 @@ app.post("/auth/login", loginLimiter, (req, res) => {
         secure: false, // use of secure
         sameSite: "strict",
       });
+      
+      const userInfo = {
+        name:user.name,
+        email:user.email,
+        userRole:user.user_role
+      }
       res.json({
         message: "Login successful",
         token: token,
+        userInfo: userInfo
       });
       // const token = Math.random().toString(36).slice(2);
       // res.cookie("tokenShownInName", token, {

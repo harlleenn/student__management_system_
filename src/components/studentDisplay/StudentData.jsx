@@ -243,10 +243,11 @@ useEffect(() => {
               </td>
             </tr>
           ))}
-          <div className={styles.lengthMessage}> {lengthMessage}</div>
+         
          
         </tbody>
       </table>
+       <> {lengthMessage}</>
 
       <div>This is page{currentPage}</div>
       {message}
