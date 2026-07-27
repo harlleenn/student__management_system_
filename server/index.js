@@ -449,11 +449,13 @@ app.post("/invite-user", async (req, res) => {
   console.log(userRole, "this should be the user role that has been selected");
 
   try {
-    db.query("INSERT into invitedUsers (email, userRole) VALUES(?, ?)", [
+    const [rows] = await db.promise().query("INSERT into invitedUsers (email, userRole) VALUES(?, ?)", [
       email,
       userRole,
     ]);
-    const invitationLink = `http://localhost:3000/invite-user-register?email=${email}`;
+    console.log(rows)
+    const invitedUserId = rows.insertId
+    const invitationLink = `http://localhost:3000/invite-user-register?id=${invitedUserId}`;
     await sendInviteEmail(email, invitationLink);
 
     res.json({
@@ -467,15 +469,11 @@ app.post("/invite-user", async (req, res) => {
 });
 
 app.get("/invite-user", async (req, res) => {
-  const email = req.query.email;
-  console.log(
-    email,
-    "this is the email that getting from the query once enetered in the popup",
-  );
+  const userId = req.query.id
   try {
     const [rows] = await db
       .promise()
-      .query("SELECT *  from invitedUsers where email = ? ORDER BY ID DESC LIMIT 1" , [email]);
+      .query("SELECT *  from invitedUsers where id = ? ORDER BY ID DESC LIMIT 1" , [userId]);
       // console.log(rows, "these are the rows")
     res.json({ userRole: rows[0].userRole, email: rows[0].email });
     

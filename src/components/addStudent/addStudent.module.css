@@ -5,13 +5,15 @@
   justify-content: center;
   gap:6px;
   align-items: center;
- background-color: #03922e;
+ background-color: #0a822e;
  margin-bottom: 10px;
  font-weight: 400;
  font-size:medium ;
  color: aliceblue;
  width: auto;
  cursor: pointer;
+ padding-inline: 10px;
+ border-style: solid;
 }
 .addBtnCont{
     display: flex;

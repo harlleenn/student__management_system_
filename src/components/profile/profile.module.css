@@ -1,11 +1,13 @@
 .logoutCont {
   display: flex;
   flex-direction: row;
-  background-color: rgb(222, 229, 222);
+  background-color:#0b7753;
   width: auto;
   justify-content: end;
   margin-bottom: 10px;
   padding: 14px;
+  border-start-start-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .logoutBtn {
   width: auto;
@@ -14,48 +16,54 @@
 }
 .options {
   position: absolute;
-  top: 50px;
+  top: 60px;
+  right: 40px;
   padding: 10px;
   background-color: rgb(249, 249, 249);
   display: flex;
   flex-direction: column;
-  
   width: 200px;
   height: 100px;
 }
 
 .option {
-  background-color: rgb(81, 49, 18);
+  background-color: rgba(223, 216, 216, 0.864);
   display: flex;
   justify-content: space-between;
   padding: 10px;
   cursor: pointer;
+  border-radius: 10px;
+  color: rgba(229, 35, 35, 0.885);
 
 }
 .option:hover {
-  background-color: azure;
+  background-color: #f824247e;
+  transition:ease-in-out;
+  transition-duration: 100ms;
 }
 .logoutModal {
   position: fixed;
-  background-color: rgb(5, 144, 37);
+  background-color: rgb(219, 224, 220);
   right: 600px;
   top: 200px;
   border-radius: 10px;
   width: 400px;
   height: 300px;
+border-style: solid;
+border-color: rgb(232, 235, 237);
 }
 .logoutInner {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+gap:25px;
   width: 100%;
   height: 100%;
 }
 .logoutBtns {
   display: flex;
   flex-direction: row;
-
   width: fit-content;
   gap: 10px;
 }
@@ -64,12 +72,36 @@
     color: black;
     font-size: small;
     padding-inline: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    border-style: solid;
+    border-color: aliceblue;
 }
+.cancelbtns:hover{
+background-color: rgb(197, 191, 191);
+transition-duration: 100ms;
+}  
 .logbtns{
-  
-    background-color: #000000;
-    color: w;
+  cursor: pointer;
+    background-color: rgba(248, 36, 36, 0.799);
+    color: black;
     font-size: small;
     padding-inline: 30px;
+    font-size: 15px;
+      border-style: solid;
+    border-color: rgb(196, 40, 40);
 
+}
+.logbtns:hover{
+background-color: red;
+transition-duration: 100ms;
+}  
+.userCircle{
+  background-color: aliceblue;
+  padding: 3px;
+  border-radius: 10px;
+}
+.logoutQ{
+  font-size: 18px;
+  font-weight: 300;
 }

@@ -40,9 +40,6 @@ const handleClick = () => {
   return (
     <div className={styles.loginCont}>
         <div className={styles.login}>
-      {/* {error ? <div>
-        {error}
-      </div> : ""} */}
       <div className={styles.message}>
         Welcome Back
         <div>Login to your Student Acc</div>

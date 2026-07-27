@@ -9,7 +9,7 @@ background-color: rgb(235, 239, 241);
   border-radius: 10px;
   padding: 30px;
   width: 300px;
-  height: 400px;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ background-color: rgb(235, 239, 241);
 input {
   padding: 15px;
   display: flex;
-  gap: 20px;
+ 
   border-width: 2px;
   border-style: solid;
   border-color: rgb(223, 229, 229);
@@ -45,9 +45,8 @@ form {
   display: flex;
   flex-direction: column;
 
-  margin: 10x;
   width: 300px;
-  gap:20px
+
 }
 .heading {
   font-size: 20px;
@@ -64,16 +63,4 @@ form {
   color: red;
   font-weight: 500;
 }
-.nameRole{
-  display: flex;
-  flex-direction: column;
-  
-  justify-content: center;
-  width: 100%;
-}
-.nameRoleCont{
-  display: flex;
-  display: row;
-  gap: 5px;
-  margin-top: 10px;
-}
+

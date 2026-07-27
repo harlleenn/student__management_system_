@@ -46,14 +46,15 @@ const handleLogout = async () => {
     <div className={styles.logoutCont}>
       <UserCircle2
         onClick={handleOptions}
-        width={50}
+        width={30}
         height={30}
         cursor="pointer"
+        className={styles.userCircle}
       />
       {option ? (
         <div className={styles.options}>
           <div onClick={() => handleModal()} className={styles.option}>
-            Logout
+            Log out<LogOut/>
           </div>
         </div>
       ) : (
@@ -63,7 +64,7 @@ const handleLogout = async () => {
       {modal ? (
         <div className={styles.logoutModal}>
           <div className={styles.logoutInner}>
-            <p>Are you sure you want to log out?</p>
+            <p className={styles.logoutQ}>Are you sure you want to log out?</p>
             <div className={styles.logoutBtns}>
               <button onClick={handleLogout} className={styles.logbtns}>
                 Logout
