@@ -331,12 +331,12 @@ app.post("/auth/login", loginLimiter, (req, res) => {
       const userInfo = {
         name:user.name,
         email:user.email,
-        userRole:user.user_role
+        user_role:user.user_role
       }
       res.json({
         message: "Login successful",
         token: token,
-        userInfo: userInfo
+        user_info: userInfo
       });
       // const token = Math.random().toString(36).slice(2);
       // res.cookie("tokenShownInName", token, {

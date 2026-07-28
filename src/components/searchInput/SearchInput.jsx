@@ -10,7 +10,7 @@ export default function SearchInput({query,setQuery}) {
         onChange={(e) => setQuery(e.target.value)}
         value={query}
         />
-        { <div>{query}</div>}
+     
     </div>
   )
 }

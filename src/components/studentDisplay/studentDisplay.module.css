@@ -80,10 +80,38 @@ table {
   height: 40rem;
   width: 80rem;
 }
-.lengthMessage{
-  background-color: #1a795a;
+
+.pageInfo{
   display: flex;
   justify-content: center;
-  align-content: center;
-  padding: 100px;
+  padding: 10px;
+width: fit-content;
+  background-color: #0b7753 ;
+  
+  color: aliceblue;
+}
+.pageCont{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.lengthMessage{
+  background-color: rgb(226, 234, 231);
+  justify-content: center;
+  display: flex;
+  padding: 10px;
+  color: rgb(239, 22, 22);
+  font-size: larger;
+  font-weight: 500;
+  width: fit-content;
+
+}
+.lengthMessageCont{
+  
+  justify-content: center;
+  display: flex;
+  padding: 10px;
+  
+
+
 }

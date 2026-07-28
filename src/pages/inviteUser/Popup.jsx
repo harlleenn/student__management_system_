@@ -42,7 +42,7 @@ export default function Popup() {
             <label htmlFor="admin">Admin</label>
             <input
               type="radio"
-              value="Admin"
+              value="admin"
               name="userRole"
               id="admin"
               checked={userRole === "Admin"}
@@ -52,7 +52,7 @@ export default function Popup() {
             <label htmlFor="viewer">Viewer</label>
             <input
               type="radio"
-              value="Viewer"
+              value="viewer"
               name="userRole"
               id="viewer"
               checked={userRole === "Viewer"}
@@ -62,7 +62,7 @@ export default function Popup() {
             <label htmlFor="editor">Editor</label>
             <input
               type="radio"
-              value="Editor"
+              value="editor"
               name="userRole"
               id="editor"
               checked={userRole === "Editor"}

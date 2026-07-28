@@ -35,6 +35,7 @@ useEffect(() => {
   loadingRef.current = loading;
   hasMoreDataRef.current = hasMoreData;
 }, [loading, hasMoreData]);
+
   const fetchData = async (appendMore) => {
     try {
       setLoading(true);
@@ -55,7 +56,9 @@ useEffect(() => {
       }
       if(response.data.length === 0){
         setLengthMessage("No such student found ")
-      }//when search back show data
+      }else{
+        setLengthMessage("")
+      }
 
       if (appendMore) {
         setStudents((prev) => [...prev, ...response.data]);
@@ -64,7 +67,6 @@ useEffect(() => {
       }
       setLoading(false);
     } catch (error) {
-      console.log(error.response.status);
       if (error.response?.status === 403) {
         try {
           const response = await axios.post(
@@ -194,8 +196,13 @@ useEffect(() => {
         selectedStudent={selectedStudent}
       />
       <SearchInput query={query} setQuery={setQuery} />
-   
-      {loading ? <LoadingSpinner /> : "It is not loading"}
+   <div className={styles.lengthMessageCont}>
+    <div className={styles.lengthMessage}>
+        {lengthMessage}
+    </div>
+  
+   </div>
+      {loading ? <LoadingSpinner /> : ""}
       <table className={styles.tableDisplay} ref={scrollContainerRef}>
         <tbody className={styles.tableBody}>
           <tr>
@@ -247,10 +254,18 @@ useEffect(() => {
          
         </tbody>
       </table>
-       <> {lengthMessage}</>
+       
 
-      <div>This is page{currentPage}</div>
-      {message}
+      <div className={styles.pageCont}>
+        <div className={styles.pageInfo}>
+          Page {currentPage} out of 5 pages
+        </div>
+         
+         </div> 
+      {/* hardcoded numberof pages for now */}
+    
+    
+    
       {!hasMoreData && <div>No more students to load</div>}
     </div>
   );
