@@ -39,6 +39,7 @@ const handleLogout = async () => {
 };
   const handleModal = () => {
     setModal((prev) => !prev);
+    setOption(false)
     console.log("i was clicked");
   };
 
@@ -61,7 +62,7 @@ const handleLogout = async () => {
         ""
       )}
 
-      {modal ? (
+      {modal && (
         <div className={styles.logoutModal}>
           <div className={styles.logoutInner}>
             <p className={styles.logoutQ}>Are you sure you want to log out?</p>
@@ -75,8 +76,6 @@ const handleLogout = async () => {
             </div>
           </div>
         </div>
-      ) : (
-        ""
       )}
     </div>
   );

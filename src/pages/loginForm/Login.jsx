@@ -78,7 +78,7 @@ const handleClick = () => {
 </div>
    
     </div>
-    {/* {clicked? <ForgetPassword handleClick={handleClick}/> :"" } */}
+  
   
     </div>
   
