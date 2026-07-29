@@ -6,15 +6,20 @@ import { useNavigate } from "react-router";
 import { setAccessToken } from "../../auth";
 import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "../ResetPassword/ResetPassword";
+import { Eye, EyeOff } from "lucide-react";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [clicked, setClicked] = useState(false)
+  const [show, setShow] = useState(true)
   const navigate = useNavigate();
 const handleClick = () => {
   setClicked((prev) => !prev)
   console.log("i was clciked")
+}
+const handleShow = () => {
+  setShow((prev) => !prev)
 }
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,12 +61,24 @@ const handleClick = () => {
         </div>
         <div>
           <label>Password</label>
-          <input
+          <div className={styles.passwordInputCont}>
+                    
+               <input
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            type={show ? "text" : "password"}
+            
           />
+          
+       <div className={styles.passwordHide}>
+        {show ? <Eye width={20} onClick={handleShow}/> : <EyeOff width={20} onClick={handleShow}/> }
+       </div>
+          </div>
+  
+         
+         
         </div>
 
         <button>Login</button>

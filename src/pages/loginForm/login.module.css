@@ -48,6 +48,8 @@ input {
   border-style: solid;
   border-color: rgb(223, 229, 229);
   box-sizing: border-box;
+  width: 100%;
+  
 }
 button {
   background-color: black;
@@ -65,6 +67,7 @@ form {
   margin: 10px;
   gap: 20px;
   width: 300px;
+  
 }
 .heading {
   font-size: x-large;
@@ -89,4 +92,15 @@ label {
   color: red;
   
   padding: 10px;
+}
+.passwordInputCont{
+  display: flex;
+  
+  justify-content: space-between;
+  position: relative;
+}
+.passwordHide{
+  position: absolute;
+  right: 10px;
+  top: 15px;
 }
