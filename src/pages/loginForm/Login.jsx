@@ -7,6 +7,8 @@ import { setAccessToken } from "../../auth";
 import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "../ResetPassword/ResetPassword";
 import { Eye, EyeOff } from "lucide-react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +16,8 @@ export default function Login() {
   const [clicked, setClicked] = useState(false)
   const [show, setShow] = useState(true)
   const navigate = useNavigate();
+
+  const {user, setUser} = useContext(AuthContext)
 const handleClick = () => {
   setClicked((prev) => !prev)
   console.log("i was clciked")
@@ -32,7 +36,12 @@ const handleShow = () => {
       })
       .then((response) => {
         setAccessToken(response.data.token)
-        navigate("/student");
+        console.log(response.data.user_info.user_role, "this is from nirmaly the res.json")
+        
+      setUser(response.data.user_info.user_role)
+        // console.log(user.name ,"this is what i am able to get from the context")
+        // setUser(response.data.user_info)
+         navigate("/student");
         console.log(response.data);
         console.log(response.data.token, "this is the access Tokenn")
       })
@@ -48,6 +57,7 @@ const handleShow = () => {
       <div className={styles.message}>
         Welcome Back
         <div>Login to your Student Acc</div>
+        {user}
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>

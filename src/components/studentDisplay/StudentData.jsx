@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import AddStudent from "../addStudent/AddStudent";
 import styles from "./studentDisplay.module.css";
@@ -15,6 +15,7 @@ import {
 import SearchInput from "../searchInput/SearchInput";
 import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
+import { AuthContext } from "../../context/AuthContext";
 // when in search go back why no students
 export default function StudentData() {
   const [students, setStudents] = useState([]);
@@ -31,6 +32,7 @@ export default function StudentData() {
   const [lengthMessage, setLengthMessage] = useState("")
 const loadingRef = useRef(false);
 const hasMoreDataRef = useRef(true)
+const {user, setUser} = useContext(AuthContext)
 useEffect(() => {
   loadingRef.current = loading;
   hasMoreDataRef.current = hasMoreData;
@@ -203,6 +205,7 @@ useEffect(() => {
   
    </div>
       {loading ? <LoadingSpinner /> : ""}
+      {user === "Admin" ? "hello this is the admin no need to send as in login" :"idkkk"}
       <table className={styles.tableDisplay} ref={scrollContainerRef}>
         <tbody className={styles.tableBody}>
           <tr>
