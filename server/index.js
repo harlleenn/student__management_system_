@@ -215,11 +215,11 @@ app.post("/auth/register", registerValidation, validate, async (req, res) => {
     async (err, results) => {
       if (err) return res.status(500).json({ error: err.message });
 
-      if (results.length > 0) {
-        return res.status(400).json({
-          message: "User already exists",
-        });
-      }
+      // if (results.length > 1) {
+      //   return res.status(400).json({
+      //     message: "User already exists",
+      //   });
+      // }
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -465,7 +465,7 @@ app.post("/invite-user", async (req, res) => {
       email,
       userRole,
     ]);
-    console.log(rows)
+  
     const invitedUserId = rows.insertId
     const invitationLink = `http://localhost:3000/invite-user-register?id=${invitedUserId}`;
     await sendInviteEmail(email, invitationLink);

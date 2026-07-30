@@ -11,8 +11,7 @@ const registerValidation = [
   body("email")
     .trim()
     .isEmail()
-    .withMessage("Please enter a valid email")
-    .normalizeEmail(),
+    .withMessage("Please enter a valid email"),
 
   body("password")
     .isLength({ min: 6 })

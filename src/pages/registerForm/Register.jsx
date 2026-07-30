@@ -23,12 +23,6 @@ export default function Register() {
         );
         setEmail(response.data.email);
         setUserRoleData(response.data.userRole);
-        console.log(response.data);
-        console.log(
-          response.data.userRole,
-          "this is the role that i am getting in response",
-        );
-        console.log(response.data.email, "this i sthe emialalal");
       } catch (error) {
         toast.error("there was an eror");
         console.log(error);
@@ -38,8 +32,8 @@ export default function Register() {
       fetchInvite();
     }
   }, [userIdValue]);
+
   const handleSubmit = (e) => {
-    console.log("");
     e.preventDefault();
     const registerData = { name, email, password, userRoleData };
     axios
@@ -55,6 +49,8 @@ export default function Register() {
       })
       .catch((error) => {
         const data = error.response.data;
+        console.log(data)
+        console.log(error)
         if (data.errors) {
           //errors[0] is an array
           data.errors.forEach((err) => {
@@ -96,13 +92,13 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              disabled
+              
             />
           
           </div>
             <div>
               <label>Role</label>
-              <input disabled placeholder="role" value={userRoleData} />
+              <input  placeholder="role" value={userRoleData} />
             </div>
         
           <div>

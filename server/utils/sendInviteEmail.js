@@ -15,6 +15,7 @@ async function sendInviteEmail(toEmail, resetLink) {
 
   function sendMail(to, sub,msg) {
     transporter.sendMail({
+      from: process.env.EMAIL_USER,
       to:to,
       subject:sub,
       html:msg

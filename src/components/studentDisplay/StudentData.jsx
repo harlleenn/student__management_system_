@@ -15,7 +15,7 @@ import {
 import SearchInput from "../searchInput/SearchInput";
 import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
-import { AuthContext } from "../../context/AuthProvider"
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function StudentData() {
   const [students, setStudents] = useState([]);
@@ -29,15 +29,15 @@ export default function StudentData() {
   const scrollContainerRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const [lengthMessage, setLengthMessage] = useState("")
+  const [lengthMessage, setLengthMessage] = useState("");
 
-const loadingRef = useRef(false);
-const hasMoreDataRef = useRef(true)
-const {user, setUser , userName , setUserName} = useContext(AuthContext)
-useEffect(() => {
-  loadingRef.current = loading;
-  hasMoreDataRef.current = hasMoreData;
-}, [loading, hasMoreData]);
+  const loadingRef = useRef(false);
+  const hasMoreDataRef = useRef(true);
+  const { user, setUser, userName, setUserName } = useContext(AuthContext);
+  useEffect(() => {
+    loadingRef.current = loading;
+    hasMoreDataRef.current = hasMoreData;
+  }, [loading, hasMoreData]);
 
   const fetchData = async (appendMore) => {
     try {
@@ -57,10 +57,10 @@ useEffect(() => {
       } else {
         setHasMoreData(true);
       }
-      if(response.data.length === 0){
-        setLengthMessage("No such student found ")
-      }else{
-        setLengthMessage("")
+      if (response.data.length === 0) {
+        setLengthMessage("No such student found ");
+      } else {
+        setLengthMessage("");
       }
 
       if (appendMore) {
@@ -82,8 +82,8 @@ useEffect(() => {
           const newAccessToken = response.data.accessToken;
 
           setAccessToken(newAccessToken);
-           setUser(response.data.userRoleValueFromDecoded)
-          setUserName(response.data.userNameFromDecoded)
+          setUser(response.data.userRoleValueFromDecoded);
+          setUserName(response.data.userNameFromDecoded);
 
           const retryResponse = await axios.get(
             "http://localhost:8000/students",
@@ -116,7 +116,6 @@ useEffect(() => {
     }
   }, [currentPage]);
 
-
   const handleThrottle = (fn, delay) => {
     let lastCallTime = 0;
     return function throttled() {
@@ -125,7 +124,9 @@ useEffect(() => {
         lastCallTime = now;
         fn();
       } else {
-        console.log("throttling is happnening it will wait untl the now-last>delay");
+        console.log(
+          "throttling is happnening it will wait untl the now-last>delay",
+        );
       }
     };
   };
@@ -148,7 +149,6 @@ useEffect(() => {
 
   const throttleScroll = useRef(handleThrottle(handleScroll, 200));
 
-
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -169,7 +169,6 @@ useEffect(() => {
     }, 500);
     return () => clearTimeout(timeoutId);
   }, [query]);
-  
 
   const handleDelete = (id) => {
     axios.delete(`http://localhost:8000/students/${id}`, {}).then(() => {
@@ -191,26 +190,25 @@ useEffect(() => {
         <Logout />
       </header>
       <div className={styles.sidebar}>
-         <LeftSidebar/>
+        <LeftSidebar />
       </div>
+      {user !== "viewer" && (
+        <AddStudent
+          fetchData={fetchData}
+          mode={mode}
+          setMode={setMode}
+          selectedStudent={selectedStudent}
+        />
+      )}
 
-      <AddStudent
-        fetchData={fetchData}
-        mode={mode}
-        setMode={setMode}
-        selectedStudent={selectedStudent}
-      />
-       <h1>Welcome {userName}</h1>
+      <h1>Welcome {userName}</h1>
       <SearchInput query={query} setQuery={setQuery} />
-   <div className={styles.lengthMessageCont}>
-    <div className={styles.lengthMessage}>
-        {lengthMessage}
-    </div>
-  
-   </div>
+      <div className={styles.lengthMessageCont}>
+        <div className={styles.lengthMessage}>{lengthMessage}</div>
+      </div>
       {loading ? <LoadingSpinner /> : ""}
-     
-      {user === "Admin" ? "this is the admin " :"user role is null"}
+      {user}
+
       <table className={styles.tableDisplay} ref={scrollContainerRef}>
         <tbody className={styles.tableBody}>
           <tr>
@@ -220,7 +218,7 @@ useEffect(() => {
             <th>Email</th>
             <th>Course</th>
             <th>Created At</th>
-            <th>Actions</th>
+            {user !== "viewer" && <th>Actions</th>}
           </tr>
           {students.map((student) => (
             <tr key={student.id}>
@@ -237,43 +235,37 @@ useEffect(() => {
               <td>{student.email}</td>
               <td>{student.course}</td>
               <td>{student.created_at}</td>
-              <td>
-                <div className={styles.actionCont}>
-                  <button
-                    className={styles.editBtn}
-                    onClick={() => {
-                      setMode((prev) => (prev === "edit" ? null : "edit"));
-                      setSelectedStudent(student);
-                    }}
-                  >
-                    Edit <Edit width={20} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(student.id)}
-                    className={styles.deleteBtn}
-                  >
-                    Delete <Trash width={20} />
-                  </button>
-                </div>
-              </td>
+              {user !== "viewer" && (
+                <td>
+                  <div className={styles.actionCont}>
+                    <button
+                      className={styles.editBtn}
+                      onClick={() => {
+                        setMode((prev) => (prev === "edit" ? null : "edit"));
+                        setSelectedStudent(student);
+                      }}
+                    >
+                      Edit <Edit width={20} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(student.id)}
+                      className={styles.deleteBtn}
+                    >
+                      Delete <Trash width={20} />
+                    </button>
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
-         
-         
         </tbody>
       </table>
-       
 
       <div className={styles.pageCont}>
-        <div className={styles.pageInfo}>
-          Page {currentPage} out of 5 pages
-        </div>
-         
-         </div> 
+        <div className={styles.pageInfo}>Page {currentPage} out of 5 pages</div>
+      </div>
       {/* hardcoded numberof pages for now */}
-    
-    
-    
+
       {!hasMoreData && <div>No more students to load</div>}
     </div>
   );
