@@ -8,106 +8,105 @@ import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "../ResetPassword/ResetPassword";
 import { Eye, EyeOff } from "lucide-react";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthProvider";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [clicked, setClicked] = useState(false)
-  const [show, setShow] = useState(true)
+  const [clicked, setClicked] = useState(false);
+  const [show, setShow] = useState(true);
+  const [name , setName] = useState("")
   const navigate = useNavigate();
 
-  const {user, setUser} = useContext(AuthContext)
-const handleClick = () => {
-  setClicked((prev) => !prev)
-  console.log("i was clciked")
-}
-const handleShow = () => {
-  setShow((prev) => !prev)
-}
+  const { user, setUser , userName , setUserName } = useContext(AuthContext);
+  
+
+  const handleClick = () => {
+    setClicked((prev) => !prev);
+    console.log("i was clciked");
+  };
+  const handleShow = () => {
+    setShow((prev) => !prev);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
     axios
-      .post("http://localhost:8000/auth/login", { // once i ave revcied the reposnse object i will have reeponse.data.token which is in the login vala
+      .post("http://localhost:8000/auth/login", {
+    
         email,
         password,
       })
       .then((response) => {
-        setAccessToken(response.data.token)
-        console.log(response.data.user_info.user_role, "this is from nirmaly the res.json")
+        setAccessToken(response.data.token);
+        console.log(
+          response.data.user_info.user_role,
+          "this is from nirmaly the res.json",
+        );
+        setUser(response.data.user_info.user_role);
+        setUserName(response.data.user_info.name)
         
-      setUser(response.data.user_info.user_role)
-        // console.log(user.name ,"this is what i am able to get from the context")
-        // setUser(response.data.user_info)
-         navigate("/student");
-        console.log(response.data);
-        console.log(response.data.token, "this is the access Tokenn")
+        navigate("/student");
       })
       .catch((error) => {
-        setError(error.response.data.message)
-        console.log(error);
-         console.log(error.response.data.message)
+        setError(error.response.data.message);
+        console.log(error.response.data.message);
       });
   };
   return (
     <div className={styles.loginCont}>
-        <div className={styles.login}>
-      <div className={styles.message}>
-        Welcome Back
-        <div>Login to your Student Acc</div>
-        {user}
-      </div>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div>
-          <label>Email</label>
-          <input
-            placeholder="Enter Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <div className={styles.login}>
+        <div className={styles.message}>
+          Welcome Back {userName}
+          <div>Login to your Student Acc</div>
+          {user}
+          {name}
         </div>
-        <div>
-          <label>Password</label>
-          <div className={styles.passwordInputCont}>
-                    
-               <input
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            type={show ? "text" : "password"}
-            
-          />
-          
-       <div className={styles.passwordHide}>
-        {show ? <Eye width={20} onClick={handleShow}/> : <EyeOff width={20} onClick={handleShow}/> }
-       </div>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div>
+            <label>Email</label>
+            <input
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-  
-         
-         
-        </div>
+          <div>
+            <label>Password</label>
+            <div className={styles.passwordInputCont}>
+              <input
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                type={show ? "text" : "password"}
+              />
 
-        <button>Login</button>
-      </form>
-      {error && <div className={styles.loginError}>{error}</div>}
-<div className={styles.forgetPass}>
-     <div>
-        Don't have an account? <a href="/register">Sign up here</a>
+              <div className={styles.passwordHide}>
+                {show ? (
+                  <Eye width={20} onClick={handleShow} />
+                ) : (
+                  <EyeOff width={20} onClick={handleShow} />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <button>Login</button>
+        </form>
+        {error && <div className={styles.loginError}>{error}</div>}
+        <div className={styles.forgetPass}>
+          <div>
+            Don't have an account? <a href="/register">Sign up here</a>
+          </div>
+          <div className={styles.forgetPassCont}>
+            <a href="/forget-password" className={styles.forgetLink}>
+              <button onClick={handleClick}>Forget Password</button>
+            </a>
+          </div>
+        </div>
       </div>
-      <div className={styles.forgetPassCont}>
-         <a href="/forget-password" className={styles.forgetLink}><button onClick={handleClick}>Forget Password</button></a> 
-      </div>
-    
-</div>
-   
     </div>
-  
-  
-    </div>
-  
   );
 }

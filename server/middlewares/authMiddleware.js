@@ -4,10 +4,10 @@ const authenticateToken = (req, res, next) => {
 
   // Grabing token from the authorization header
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const accessToken = authHeader && authHeader.split(' ')[1];
 
   
-  if (!token) {
+  if (!accessToken) {
     return res.status(401).json({
       message: 'Unauthorized. No token provided.'
     });
@@ -16,7 +16,7 @@ const authenticateToken = (req, res, next) => {
   try {
     // Verify the token
 
-    const decoded = jwt.verify(token, process.env.ACCESS_JWT_SECRET);
+    const decoded = jwt.verify(accessToken, process.env.ACCESS_JWT_SECRET);
     req.user = decoded; // Save user info in the request
 
     next(); // Continue to the next middleware or route

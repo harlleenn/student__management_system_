@@ -10,7 +10,7 @@ import axios from 'axios'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import ForgetPassword from './pages/loginForm/ForgetPassword'
 import InviteUser from './pages/inviteUser/InviteUser'
-import AuthProvider from './context/AuthContext'
+import AuthProvider from './context/AuthProvider'
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8000'
 

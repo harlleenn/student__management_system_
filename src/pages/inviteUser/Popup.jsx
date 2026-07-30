@@ -45,7 +45,7 @@ export default function Popup() {
               value="admin"
               name="userRole"
               id="admin"
-              checked={userRole === "Admin"}
+              checked={userRole === "admin"}
               required
               onChange={(e) => setUserRole(e.target.value)}
             />
@@ -55,7 +55,7 @@ export default function Popup() {
               value="viewer"
               name="userRole"
               id="viewer"
-              checked={userRole === "Viewer"}
+              checked={userRole === "viewer"}
                required
               onChange={(e) => setUserRole(e.target.value)}
             />
@@ -65,7 +65,7 @@ export default function Popup() {
               value="editor"
               name="userRole"
               id="editor"
-              checked={userRole === "Editor"}
+              checked={userRole === "editor"}
                required={true}
               onChange={(e) => setUserRole(e.target.value)}
             />

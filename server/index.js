@@ -306,7 +306,7 @@ app.post("/auth/login", loginLimiter, (req, res) => {
         { expiresIn: "15m" },
       );
       const refreshToken = jwt.sign(
-        { email: results[0].email },
+        { email: results[0].email , user_role: results[0].user_role , name: results[0].name },
         process.env.REFRESH_JWT_SECRET,
         { expiresIn: "15w" },
       );
@@ -336,7 +336,7 @@ app.post("/auth/login", loginLimiter, (req, res) => {
       res.json({
         message: "Login successful",
         token: token,
-        user_info: userInfo
+        user_info: userInfo,
       });
       // const token = Math.random().toString(36).slice(2);
       // res.cookie("tokenShownInName", token, {
@@ -371,10 +371,10 @@ app.post("/refresh", (req, res) => {
   }
 
   try {
-    const user = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET);
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET);
     db.query(
       "SELECT * from users WHERE email = ?",
-      [user.email],
+      [decoded.email],
       (err, results) => {
         if (err) {
           res.status(500).json({
@@ -388,12 +388,16 @@ app.post("/refresh", (req, res) => {
         }
         const accessToken = jwt.sign(
           // we have it within the callback only when it is completed then we will create the access token
-          { email: user.email },
+          { email: decoded.email },
           process.env.ACCESS_JWT_SECRET,
           { expiresIn: "15m" },
         );
+        const userRoleValueFromDecoded = decoded.user_role
+        const userNameFromDecoded = decoded.name
         res.json({
+          userRoleValueFromDecoded,
           accessToken,
+          userNameFromDecoded,
           message:
             "The refresh token has been verified and a new access token created",
         });

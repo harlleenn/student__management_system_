@@ -15,8 +15,8 @@ import {
 import SearchInput from "../searchInput/SearchInput";
 import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
-import { AuthContext } from "../../context/AuthContext";
-// when in search go back why no students
+import { AuthContext } from "../../context/AuthProvider"
+
 export default function StudentData() {
   const [students, setStudents] = useState([]);
   const [mode, setMode] = useState(null);
@@ -30,9 +30,10 @@ export default function StudentData() {
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [lengthMessage, setLengthMessage] = useState("")
+
 const loadingRef = useRef(false);
 const hasMoreDataRef = useRef(true)
-const {user, setUser} = useContext(AuthContext)
+const {user, setUser , userName , setUserName} = useContext(AuthContext)
 useEffect(() => {
   loadingRef.current = loading;
   hasMoreDataRef.current = hasMoreData;
@@ -81,6 +82,8 @@ useEffect(() => {
           const newAccessToken = response.data.accessToken;
 
           setAccessToken(newAccessToken);
+           setUser(response.data.userRoleValueFromDecoded)
+          setUserName(response.data.userNameFromDecoded)
 
           const retryResponse = await axios.get(
             "http://localhost:8000/students",
@@ -197,6 +200,7 @@ useEffect(() => {
         setMode={setMode}
         selectedStudent={selectedStudent}
       />
+       <h1>Welcome {userName}</h1>
       <SearchInput query={query} setQuery={setQuery} />
    <div className={styles.lengthMessageCont}>
     <div className={styles.lengthMessage}>
@@ -205,7 +209,8 @@ useEffect(() => {
   
    </div>
       {loading ? <LoadingSpinner /> : ""}
-      {user === "Admin" ? "hello this is the admin no need to send as in login" :"idkkk"}
+     
+      {user === "Admin" ? "this is the admin " :"user role is null"}
       <table className={styles.tableDisplay} ref={scrollContainerRef}>
         <tbody className={styles.tableBody}>
           <tr>
