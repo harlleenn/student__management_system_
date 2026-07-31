@@ -8,9 +8,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [messageError, setMessageError] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [error] = useState("");
   const [userRoleData, setUserRoleData] = useState("");
   const [searchParams] = useSearchParams();
   const userIdValue = searchParams.get("id");

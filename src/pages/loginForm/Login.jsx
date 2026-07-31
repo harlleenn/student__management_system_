@@ -57,10 +57,9 @@ export default function Login() {
     <div className={styles.loginCont}>
       <div className={styles.login}>
         <div className={styles.message}>
-          Welcome Back {userName}
+          Welcome Back 
           <div>Login to your Student Acc</div>
-          {user}
-          {name}
+          
         </div>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div>

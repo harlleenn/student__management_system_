@@ -3,7 +3,9 @@
 }
 .tableDisplay {
   display: flex;
-  overflow: scroll;
+  overflow-x: scroll;
+  width: 100%;
+
 }
 .sidebar{
   

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import AddStudent from "../addStudent/AddStudent";
 import styles from "./studentDisplay.module.css";
-import { Edit, Sidebar, Trash } from "lucide-react";
+import { Edit, FilterIcon, Sidebar, Trash } from "lucide-react";
 import Logout from "../profile/Profile";
 import FileUpload from "../fileUpload/FileUpload";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,6 +16,7 @@ import SearchInput from "../searchInput/SearchInput";
 import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
 import { AuthContext } from "../../context/AuthProvider";
+import CourseFilter from "./CourseFilter";
 
 export default function StudentData() {
   const [students, setStudents] = useState([]);
@@ -34,6 +35,10 @@ export default function StudentData() {
   const loadingRef = useRef(false);
   const hasMoreDataRef = useRef(true);
   const { user, setUser, userName, setUserName } = useContext(AuthContext);
+  const [showFilter , setShowFilter] = useState(false)
+  const handleFilter = () => {
+    setShowFilter((prev) => !prev)
+  }
   useEffect(() => {
     loadingRef.current = loading;
     hasMoreDataRef.current = hasMoreData;
@@ -200,6 +205,10 @@ export default function StudentData() {
           selectedStudent={selectedStudent}
         />
       )}
+      <div onClick={handleFilter}>
+        <FilterIcon/>
+      </div>
+      {showFilter && <CourseFilter/>}
 
       <h1>Welcome {userName}</h1>
       <SearchInput query={query} setQuery={setQuery} />

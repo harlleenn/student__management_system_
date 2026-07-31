@@ -205,7 +205,23 @@ app.put("/students/:id", studentValidation, studentValidate, (req, res) => {
     },
   );
 });
+app.post("/course-selection" , (req,res) => {
+   const selectedCourse = req.body.course
+  console.log(`this is the selected course ${selectedCourse}`)
+  db.query(
+    "SELECT * from students where course = ?", [selectedCourse],
+      (err) => {
+          if (err)
+            return res.status(500).json({
+              error: err.message,
+            });
 
+          res.json({
+            message:"hi"
+          });
+        },
+  )
+})
 app.post("/auth/register", registerValidation, validate, async (req, res) => {
   const { name, email, password, userRoleData } = req.body;
 
@@ -215,11 +231,11 @@ app.post("/auth/register", registerValidation, validate, async (req, res) => {
     async (err, results) => {
       if (err) return res.status(500).json({ error: err.message });
 
-      // if (results.length > 1) {
-      //   return res.status(400).json({
-      //     message: "User already exists",
-      //   });
-      // }
+      if (results.length > 1) {
+        return res.status(400).json({
+          message: "User already exists",
+        });
+      }
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
