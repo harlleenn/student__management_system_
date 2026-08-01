@@ -35,6 +35,7 @@ export default function StudentData() {
   const loadingRef = useRef(false);
   const hasMoreDataRef = useRef(true);
   const { user, setUser, userName, setUserName } = useContext(AuthContext);
+   const [filterValue, setFilterValue] = useState("");
   const [showFilter , setShowFilter] = useState(false)
   const handleFilter = () => {
     setShowFilter((prev) => !prev)
@@ -49,7 +50,9 @@ export default function StudentData() {
       setLoading(true);
       console.log("here loading is true as i am getting the data", loading);
       const response = await axios.get(
-        `http://localhost:8000/students?search=${query}&page=${currentPage}&limit=${limit}`,
+        `http://localhost:8000/students?search=${query}&page=${currentPage}&limit=${limit}&course=${filterValue}`,
+        
+ 
         {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
@@ -101,7 +104,6 @@ export default function StudentData() {
 
           setStudents(retryResponse.data);
         } catch (error) {
-          console.log("refresh token has expired");
           console.log(error);
         }
       }
@@ -208,7 +210,7 @@ export default function StudentData() {
       <div onClick={handleFilter}>
         <FilterIcon/>
       </div>
-      {showFilter && <CourseFilter/>}
+       {showFilter && <CourseFilter filterValue={filterValue} setFilterValue={setFilterValue} courseSelect={() => fetchData(false)}/>} 
 
       <h1>Welcome {userName}</h1>
       <SearchInput query={query} setQuery={setQuery} />

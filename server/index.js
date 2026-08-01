@@ -127,39 +127,73 @@ const upload = multer({ storage });
 //     });
 //   });
 // });
-app.get("/students", authenticateToken, (req, res) => {
-  const sql = `
-    SELECT *
-    FROM students
-    WHERE
-      name LIKE ?
-      OR email LIKE ?
-      OR course LIKE ?
-      LIMIT ?
-      OFFSET ?
+// app.get("/students", authenticateToken, (req, res) => {
+  
+//   const sql = `
+//     SELECT *
+//     FROM students
+//     WHERE
+//       name LIKE ?
+//       OR email LIKE ?
+//       or course LIKE ?
+//       LIMIT ?
+//       OFFSET ?
       
-  `;
+//   `;
+//   const selectedCourse = req.query.course
+//   const search = req.query.search || "";
+//   const page = Number(req.query.page) || 1; // query always gives the value in
+//   const limit = Number(req.query.limit) || 4;
+//   const offset = (page - 1) * 4;
+//   console.log(selectedCourse)
+
+
+
+//   const term = `%${search}%`;
+
+//   db.query(sql, [term, term,term , limit, offset], (err, results) => {
+    
+//     if (err) {
+//       return res
+//         .status(500)
+//         .json({
+//           message: "there was an error getting results matching the search",
+//         });
+//     }
+
+//     res.json(results);
+//   });
+// });
+app.get("/students", authenticateToken, (req, res) => {
   const search = req.query.search || "";
-  const page = Number(req.query.page) || 1; // query always gives the value in
+  const selectedCourse = req.query.course || "";
+  const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 4;
   const offset = (page - 1) * 4;
 
-  console.log(req.query);
-  console.log(req.query.search, "this is the exact word");
-  console.log(page, "this i sthe value of the page");
-
   const term = `%${search}%`;
 
-  db.query(sql, [term, term, term, limit, offset], (err, results) => {
-    
-    if (err) {
-      return res
-        .status(500)
-        .json({
-          message: "there was an error getting results matching the search",
-        });
-    }
+  let sql = `
+    SELECT *
+    FROM students
+    WHERE (name LIKE ? OR email LIKE ? OR course LIKE ?)
+  `;
+  const params = [term, term, term];
 
+  if (selectedCourse) {
+    sql += ` AND course = ?`;
+    params.push(selectedCourse);
+  }
+
+  sql += ` LIMIT ? OFFSET ?`;
+  params.push(limit, offset);
+
+  db.query(sql, params, (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        message: "there was an error getting results matching the search",
+      });
+    }
     res.json(results);
   });
 });
@@ -205,23 +239,23 @@ app.put("/students/:id", studentValidation, studentValidate, (req, res) => {
     },
   );
 });
-app.post("/course-selection" , (req,res) => {
-   const selectedCourse = req.body.course
-  console.log(`this is the selected course ${selectedCourse}`)
-  db.query(
-    "SELECT * from students where course = ?", [selectedCourse],
-      (err) => {
-          if (err)
-            return res.status(500).json({
-              error: err.message,
-            });
+// app.post("/course-selection" , (req,res) => {
+//    const selectedCourse = req.body.course
+//   console.log(`this is the selected course ${selectedCourse}`)
+//   db.query(
+//     "SELECT * from students where course = ?", [selectedCourse],
+//       (err, results) => {
+//           if (err)
+//             return res.status(500).json({
+//               error: err.message,
+//             });
 
-          res.json({
-            message:"hi"
-          });
-        },
-  )
-})
+//           res.json({
+//             results:results
+//           });
+//         },
+//   )
+// })
 app.post("/auth/register", registerValidation, validate, async (req, res) => {
   const { name, email, password, userRoleData } = req.body;
 
@@ -324,7 +358,7 @@ app.post("/auth/login", loginLimiter, (req, res) => {
       const refreshToken = jwt.sign(
         { email: results[0].email , user_role: results[0].user_role , name: results[0].name },
         process.env.REFRESH_JWT_SECRET,
-        { expiresIn: "15w" },
+        { expiresIn: "40w" },
       );
       db.query(
         "UPDATE users SET refresh_token = ? WHERE email = ? ",
