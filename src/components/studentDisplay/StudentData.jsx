@@ -52,7 +52,6 @@ export default function StudentData() {
       const response = await axios.get(
         `http://localhost:8000/students?search=${query}&page=${currentPage}&limit=${limit}&course=${filterValue}`,
         
- 
         {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
