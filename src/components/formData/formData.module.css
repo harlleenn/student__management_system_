@@ -4,9 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(67, 132, 53, 0.979);
-  height: 50%;
-  width: 30%;
+  background-color: rgb(206, 209, 205);
+  height: 25rem;
+  width: 25rem;
   margin: auto;
   border-radius: 20px;
 }
@@ -25,25 +25,35 @@ input {
   padding: 15px;
   border-radius: 10px;
   margin-top: 2px;
-  background-color: rgb(0, 0, 0);
+   background-color: rgb(4, 134, 71);
   margin-top: 5px;
   color: aliceblue;
-  width: fit-content;
+  width: 9rem;
+   border-style: solid;
+  border-color: azure;
+  cursor: pointer;
 }
 .addStudent {
   padding: 15px;
   border-radius: 10px;
   margin-top: 2px;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(4, 134, 71);
   margin-top: 5px;
   color: aliceblue;
-  width: fit-content;
+  width: 9rem;
+  border-style: solid;
+  border-color: azure;
+  cursor: pointer;
 }
+.addStudent:hover {
+  background-color: rgb(6, 178, 95);
 
+}
 .formInputs {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+ 
 }
 

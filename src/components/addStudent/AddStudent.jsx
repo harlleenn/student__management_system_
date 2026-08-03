@@ -15,8 +15,6 @@ export default function AddStudent({
   const [email, setEmail] = useState("");
   const [course, setCourse] = useState("");
 
-  const token = localStorage.getItem("token");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newStudent = { name, course, email };
@@ -26,11 +24,13 @@ export default function AddStudent({
         newStudent,
       );
       const data = await response.data;
-      // setCourse("");
-      // setName("");
-      // setEmail("");
+
       setMode(null);
       fetchData();
+      setCourse("");
+      setName("");
+      setEmail("");
+      // console.log(response.data.message)
     } catch (error) {
       const data = error.response.data;
       if (data.errors) {
@@ -38,8 +38,9 @@ export default function AddStudent({
           toast.error(err.msg);
         });
       }
-      console.log(error);
-      console.log(error.response.data.errors[0].msg);
+      toast.error(error.response.data.message)
+      
+      
     }
   };
 

@@ -87,25 +87,24 @@ app.get("/students", authenticateToken, async  (req, res) => {
   const search = req.query.search || "";
   const selectedCourse = req.query.course || "";
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 4;
-  const offset = (page - 1) * limit;
+  const limit = Number(req.query.limit) || 5;
+  const offset = (page - 1) * 5;
 
   const term = `%${search}%`; // what is this for like getting the exact
 
   let sql = `
     SELECT *
     FROM students
-    WHERE (name LIKE ? OR email LIKE ?)
-    `;
+    WHERE (name LIKE ? OR email LIKE ?)`;
 
   const params = [term, term];
 
   if (selectedCourse) {
-    sql = sql + ` AND course = ?`;
+    sql = sql + `AND course = ?`;
     params.push(selectedCourse);
   }
 
-  sql = sql + ` LIMIT ? OFFSET ?`;
+  sql = sql + `LIMIT ? OFFSET ?`;
   params.push(limit, offset);
   
   try{
@@ -116,20 +115,50 @@ app.get("/students", authenticateToken, async  (req, res) => {
   }
 });
 
-app.post("/students", studentValidation, studentValidate, (req, res) => {
-  const { name, email, course } = req.body;
-  db.query(
-    "INSERT INTO students (name, course, email) VALUES (?, ?, ?)",
-    [name, course, email],
-    (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.json({ message: "Student added", id: results.insertId });
-    },
-  );
-});
+// app.post("/students", studentValidation, studentValidate, async (req, res) => {
+//   const { name, email, course } = req.body;
+//      const [results] = await db.promise().query(
+//     "SELECT * FROM STUDENTS email = ?" , [email]
+//   )
 
+//   if(email){
+//     res.status(400).json({message:"This email already exists"})
+//     return;
+//   }
+//   try{
+//       const [results] =   await db.promise().query(
+//     "INSERT INTO students (name, course, email) VALUES (?, ?, ?)",
+//     [name, course, email])
+//      res.json({ message: "Student added", id: results.insertId });
+//   }catch(error) {
+//      return res.status(500).json({ error: error.message });
+//   }
+// }
+// )
+app.post("/students", studentValidation, studentValidate, async (req, res) => {
+  const { name, email, course } = req.body;
+
+  try {
+    const [results] = await db.promise().query(
+      "SELECT * FROM students WHERE email = ?",
+      [email]
+    );
+
+    if (results.length > 0) {
+      return res.status(400).json({ message: "This email already exists" });
+    }
+
+    const [insertResult] = await db.promise().query(
+      "INSERT INTO students (name, course, email) VALUES (?, ?, ?)",
+      [name, course, email]
+    );
+
+    return res.json({ message: "Student added", id: insertResult.insertId });
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 app.delete("/students/:id", (req, res) => {
   db.query(
     "DELETE FROM students WHERE id = ?",
@@ -257,6 +286,7 @@ app.post("/auth/login", loginLimiter, (req, res) => {
         process.env.ACCESS_JWT_SECRET,
         { expiresIn: "15m" },
       );
+
       const refreshToken = jwt.sign(
         { email: results[0].email , user_role: results[0].user_role , name: results[0].name },
         process.env.REFRESH_JWT_SECRET,

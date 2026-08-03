@@ -26,7 +26,7 @@ export default function StudentData() {
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setlimit] = useState(4);
+  const [limit, setlimit] = useState(5);
   const scrollContainerRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
@@ -169,9 +169,11 @@ export default function StudentData() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
+      if (query) {
         setCurrentPage(1);
         setHasMoreData(true);
         fetchData(false);
+      }
     }, 100);
     return () => clearTimeout(timeoutId);
   }, [query]);

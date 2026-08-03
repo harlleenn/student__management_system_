@@ -6,10 +6,13 @@ body{
   height: screen;
  align-items: center;
  
+ 
  font-family: Arial ,sans-serif;
 }
 
-
+html{
+  width: 100%;
+}
 .Toastify__toast-theme--light.Toastify__toast--success {
   background-color: #d4edda;
   color: #155724;

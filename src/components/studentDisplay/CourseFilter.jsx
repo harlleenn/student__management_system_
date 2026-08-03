@@ -21,6 +21,8 @@ export default function CourseFilter({ filterValue, setFilterValue , courseSelec
           <option value="MCA">MCA</option>
           <option value="BCA">BCA</option>
           <option value="Btech">Btech</option>
+          <option value="Bcom">Bcom</option>
+          <option value="Bba">Bba</option>
           <option value="">Clear</option>
         </select>
         <button onClick={courseSelect} className={styles.done}>Done</button>

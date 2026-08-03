@@ -39,6 +39,7 @@ export default function FormData({
         closeButton: false,
       });
       setMode(null);
+      setEmail("")
       console.log("Student has been edited");
     } catch (error) {
       const data = error.response.data;

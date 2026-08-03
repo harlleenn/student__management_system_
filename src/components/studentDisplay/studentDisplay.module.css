@@ -3,8 +3,9 @@
 }
 .tableDisplay {
   display: flex;
-  overflow-x: scroll;
+  overflow: scroll;
   width: 100%;
+
 
 }
 .sidebar{
@@ -59,11 +60,12 @@ th {
   padding: 5px;
   gap: 5px;
   border-radius: 5px;
-  background-color: rgba(199, 44, 44, 0.921);
+  background-color: rgb(233, 25, 25);
   color: rgb(241, 239, 239);
   font-size: small;
   cursor: pointer;
-  border-color: #000000;
+  border-color: #fc0404;
+border-style: solid;
 }
 .deleteBtn:hover {
   background-color: rgba(255, 2, 2, 0.921);
@@ -76,6 +78,7 @@ th {
   gap: 5px;
   border-radius: 5px;
   cursor: pointer;
+  background-color: #05950f;
 }
 .register {
   display: flex;
