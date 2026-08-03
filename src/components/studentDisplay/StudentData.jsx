@@ -48,7 +48,7 @@ export default function StudentData() {
   const fetchData = async (appendMore) => {
     try {
       setLoading(true);
-      console.log("here loading is true as i am getting the data", loading);
+      console.log(`here loading is ${loading}  as i am getting the data`, loading);
       const response = await axios.get(
         `http://localhost:8000/students?search=${query}&page=${currentPage}&limit=${limit}&course=${filterValue}`,
         
@@ -76,6 +76,7 @@ export default function StudentData() {
         setStudents(response.data);
       }
       setLoading(false);
+      console.log(response.data)
     } catch (error) {
       if (error.response?.status === 403) {
         try {
@@ -102,6 +103,7 @@ export default function StudentData() {
           );
 
           setStudents(retryResponse.data);
+          console.log(retryResponse.data)
         } catch (error) {
           console.log(error);
         }
@@ -167,12 +169,10 @@ export default function StudentData() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (query) {
         setCurrentPage(1);
         setHasMoreData(true);
         fetchData(false);
-      }
-    }, 500);
+    }, 100);
     return () => clearTimeout(timeoutId);
   }, [query]);
 
