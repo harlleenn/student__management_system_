@@ -12,7 +12,7 @@ export default function Register() {
   const [userRoleData, setUserRoleData] = useState("");
   const [searchParams] = useSearchParams();
   const userIdValue = searchParams.get("id");
-  console.log(userIdValue, "this is the value of the id ");
+  
   useEffect(() => {
     const fetchInvite = async () => {
       try {

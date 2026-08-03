@@ -206,10 +206,17 @@ export default function StudentData() {
           selectedStudent={selectedStudent}
         />
       )}
-      <div onClick={handleFilter}>
+      <div className={styles.filterCont}>
+        <div onClick={handleFilter} className={styles.filterCourse}>
         <FilterIcon/>
       </div>
-       {showFilter && <CourseFilter filterValue={filterValue} setFilterValue={setFilterValue} courseSelect={() => fetchData(false)}/>} 
+      </div>
+      
+       {showFilter
+        && <CourseFilter
+         filterValue={filterValue}
+         setFilterValue={setFilterValue} 
+         courseSelect={() => fetchData(false)}/>} 
 
       <h1>Welcome {userName}</h1>
       <SearchInput query={query} setQuery={setQuery} />

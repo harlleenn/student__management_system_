@@ -83,119 +83,37 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
-// res.status(401).json({ message: 'Invalid credentials' });
-
-// app.get("/students", authenticateToken, (req, res) => {
-//   db.query("SELECT * FROM students", (err, results) => {
-
-//     if (err) {
-//       return res.status(500).json({ error: err.message });
-//     }
-//     console.log("this shoudl be the query" ,req.query.search)
-
-//     res.json(results);
-//   });
-// });
-// app.get("/students", authenticateToken, (req, res) => {
-//   const search = req.query.search || "";
-//   const page = Number(req.query.page) || 1;
-//   const limit = 10;
-//   const offset = (page - 1) * limit;
-
-//   console.log(req.query);
-
-//   const sql = `
-//     SELECT *
-//     FROM students
-//     WHERE
-//       name LIKE ?
-//       OR email LIKE ?
-//       OR course LIKE ?
-//     LIMIT ? OFFSET ?
-//   `;
-
-//   const term = `%${search}%`;
-
-//   db.query(sql, [term, term, term, limit, offset], (err, results) => {
-//     if (err) {
-//       return res.status(500).json({ message: "there was an error getting results matching the search" });
-//     }
-
-//     res.json({
-//       students: results,
-//       hasMore: results.length === limit,
-//     });
-//   });
-// });
-// app.get("/students", authenticateToken, (req, res) => {
-  
-//   const sql = `
-//     SELECT *
-//     FROM students
-//     WHERE
-//       name LIKE ?
-//       OR email LIKE ?
-//       or course LIKE ?
-//       LIMIT ?
-//       OFFSET ?
-      
-//   `;
-//   const selectedCourse = req.query.course
-//   const search = req.query.search || "";
-//   const page = Number(req.query.page) || 1; // query always gives the value in
-//   const limit = Number(req.query.limit) || 4;
-//   const offset = (page - 1) * 4;
-//   console.log(selectedCourse)
-
-
-
-//   const term = `%${search}%`;
-
-//   db.query(sql, [term, term,term , limit, offset], (err, results) => {
-    
-//     if (err) {
-//       return res
-//         .status(500)
-//         .json({
-//           message: "there was an error getting results matching the search",
-//         });
-//     }
-
-//     res.json(results);
-//   });
-// });
-app.get("/students", authenticateToken, (req, res) => {
+app.get("/students", authenticateToken, async  (req, res) => {
   const search = req.query.search || "";
   const selectedCourse = req.query.course || "";
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 4;
-  const offset = (page - 1) * 4;
+  const offset = (page - 1) * limit;
 
-  const term = `%${search}%`;
+  const term = `%${search}%`; // what is this for like getting the exact
 
   let sql = `
     SELECT *
     FROM students
-    WHERE (name LIKE ? OR email LIKE ? OR course LIKE ?)
-  `;
-  const params = [term, term, term];
+    WHERE (name LIKE ? OR email LIKE ?)
+    `;
+
+  const params = [term, term];
 
   if (selectedCourse) {
-    sql += ` AND course = ?`;
+    sql = sql + ` AND course = ?`;
     params.push(selectedCourse);
   }
 
-  sql += ` LIMIT ? OFFSET ?`;
+  sql = sql + ` LIMIT ? OFFSET ?`;
   params.push(limit, offset);
-
-  db.query(sql, params, (err, results) => {
-    if (err) {
-      return res.status(500).json({
-        message: "there was an error getting results matching the search",
-      });
-    }
-    res.json(results);
-  });
+  
+  try{
+    const [results] = await  db.promise().query(sql , params)
+    res.json(results)
+  }catch(error) {
+    res.json({messsage:"there was an error getting your search"})
+  }
 });
 
 app.post("/students", studentValidation, studentValidate, (req, res) => {
@@ -239,23 +157,7 @@ app.put("/students/:id", studentValidation, studentValidate, (req, res) => {
     },
   );
 });
-// app.post("/course-selection" , (req,res) => {
-//    const selectedCourse = req.body.course
-//   console.log(`this is the selected course ${selectedCourse}`)
-//   db.query(
-//     "SELECT * from students where course = ?", [selectedCourse],
-//       (err, results) => {
-//           if (err)
-//             return res.status(500).json({
-//               error: err.message,
-//             });
 
-//           res.json({
-//             results:results
-//           });
-//         },
-//   )
-// })
 app.post("/auth/register", registerValidation, validate, async (req, res) => {
   const { name, email, password, userRoleData } = req.body;
 
