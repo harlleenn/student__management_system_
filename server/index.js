@@ -88,7 +88,7 @@ app.get("/students", authenticateToken, async  (req, res) => {
   const selectedCourse = req.query.course || "";
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 5;
-  const offset = (page - 1) * 5;
+  const offset = (page - 1) * limit;
 
   const term = `%${search}%`; // what is this for like getting the exact
 

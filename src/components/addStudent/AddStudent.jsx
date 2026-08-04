@@ -31,6 +31,7 @@ export default function AddStudent({
       setName("");
       setEmail("");
       // console.log(response.data.message)
+      toast.success(response.data.message)
     } catch (error) {
       const data = error.response.data;
       if (data.errors) {

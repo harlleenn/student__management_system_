@@ -1,0 +1,26 @@
+.timerCont{
+
+    justify-content: center;
+    display: flex;
+    
+}
+.timer{
+ background-color: rgb(122, 180, 159);
+    width: 27rem;
+    display: flex;
+    height: 14rem;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+    flex-direction: column;
+}
+.timerBtnCont{
+    display: flex;
+    gap: 5px;
+}
+.cancelBtn{
+    background-color: rgb(17, 141, 52);
+}
+.logoutBtn{
+    background-color: rgb(166, 9, 9);
+}

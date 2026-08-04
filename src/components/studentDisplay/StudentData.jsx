@@ -17,6 +17,8 @@ import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
 import { AuthContext } from "../../context/AuthProvider";
 import CourseFilter from "./CourseFilter";
+import Exercise from "./Exercise";
+import TimeoutSession from "../timeoutSession/TimeoutSession";
 
 export default function StudentData() {
   const [students, setStudents] = useState([]);
@@ -35,11 +37,17 @@ export default function StudentData() {
   const loadingRef = useRef(false);
   const hasMoreDataRef = useRef(true);
   const { user, setUser, userName, setUserName } = useContext(AuthContext);
-   const [filterValue, setFilterValue] = useState("");
-  const [showFilter , setShowFilter] = useState(false)
+  const [filterValue, setFilterValue] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+const [excerise , setExercise] = useState(false)
+
+const handleExcerise = ()  => {
+setExercise((prev) => !prev)
+}
+
   const handleFilter = () => {
-    setShowFilter((prev) => !prev)
-  }
+    setShowFilter((prev) => !prev);
+  };
   useEffect(() => {
     loadingRef.current = loading;
     hasMoreDataRef.current = hasMoreData;
@@ -48,10 +56,13 @@ export default function StudentData() {
   const fetchData = async (appendMore) => {
     try {
       setLoading(true);
-      console.log(`here loading is ${loading}  as i am getting the data`, loading);
+      console.log(
+        `here loading is ${loading}  as i am getting the data`,
+        loading,
+      );
       const response = await axios.get(
         `http://localhost:8000/students?search=${query}&page=${currentPage}&limit=${limit}&course=${filterValue}`,
-        
+
         {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
@@ -76,7 +87,7 @@ export default function StudentData() {
         setStudents(response.data);
       }
       setLoading(false);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       if (error.response?.status === 403) {
         try {
@@ -103,7 +114,7 @@ export default function StudentData() {
           );
 
           setStudents(retryResponse.data);
-          console.log(retryResponse.data)
+          console.log(retryResponse.data);
         } catch (error) {
           console.log(error);
         }
@@ -169,12 +180,10 @@ export default function StudentData() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (query) {
-        setCurrentPage(1);
-        setHasMoreData(true);
-        fetchData(false);
-      }
-    }, 100);
+      setCurrentPage(1);
+      setHasMoreData(true);
+      fetchData(false);
+    }, 300);
     return () => clearTimeout(timeoutId);
   }, [query]);
 
@@ -189,6 +198,17 @@ export default function StudentData() {
       });
     });
   };
+  const handleCourseSelect = (value) => {
+    if (value === "") {
+      setCurrentPage(1)
+      fetchData(false)
+       console.log(value , "this is for the value i wanted to pass")
+    } else {
+      fetchData(false);
+      
+    }
+  }; 
+
 
   return (
     <div>
@@ -200,6 +220,8 @@ export default function StudentData() {
       <div className={styles.sidebar}>
         <LeftSidebar />
       </div>
+     {/* <button onClick={handleExcerise}>Click me for excise</button> */}
+      <TimeoutSession/>
       {user !== "viewer" && (
         <AddStudent
           fetchData={fetchData}
@@ -210,15 +232,17 @@ export default function StudentData() {
       )}
       <div className={styles.filterCont}>
         <div onClick={handleFilter} className={styles.filterCourse}>
-        <FilterIcon/>
+          <FilterIcon />
+        </div>
       </div>
-      </div>
-      
-       {showFilter
-        && <CourseFilter
-         filterValue={filterValue}
-         setFilterValue={setFilterValue} 
-         courseSelect={() => fetchData(false)}/>} 
+
+      {showFilter && (
+        <CourseFilter
+          filterValue={filterValue}
+          setFilterValue={setFilterValue}
+          handleCourseSelect={handleCourseSelect}
+        />
+      )}
 
       <h1>Welcome {userName}</h1>
       <SearchInput query={query} setQuery={setQuery} />
@@ -281,7 +305,7 @@ export default function StudentData() {
       </table>
 
       <div className={styles.pageCont}>
-        <div className={styles.pageInfo}>Page {currentPage} out of 5 pages</div>
+        <div className={styles.pageInfo}>Page {currentPage} out of 6 pages</div>
       </div>
       {/* hardcoded numberof pages for now */}
 

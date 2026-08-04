@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from './courseFilter.module.css'
-export default function CourseFilter({ filterValue, setFilterValue , courseSelect}) {
+export default function CourseFilter({ filterValue, setFilterValue , handleCourseSelect}) {
  
 
 
@@ -15,9 +15,9 @@ export default function CourseFilter({ filterValue, setFilterValue , courseSelec
           onChange={(e) => setFilterValue(e.target.value)}
           className={styles.options}
         >
-          <option value="" disabled>
+          {/* <option value="" disabled>
             -- Select --
-          </option>
+          </option> */}
           <option value="MCA">MCA</option>
           <option value="BCA">BCA</option>
           <option value="Btech">Btech</option>
@@ -25,7 +25,7 @@ export default function CourseFilter({ filterValue, setFilterValue , courseSelec
           <option value="Bba">Bba</option>
           <option value="">Clear</option>
         </select>
-        <button onClick={courseSelect} className={styles.done}>Done</button>
+        <button onClick={() => handleCourseSelect(filterValue)} className={styles.done}>Done</button>
         {filterValue}
       </div>
     </div>
