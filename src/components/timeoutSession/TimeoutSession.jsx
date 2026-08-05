@@ -29,6 +29,7 @@ export default function TimeoutSession() {
     navigate("/student")
     setShowPopup(false)
   }
+  
   return (
     <div >
 
