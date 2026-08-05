@@ -17,7 +17,6 @@ import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
 import { AuthContext } from "../../context/AuthProvider";
 import CourseFilter from "./CourseFilter";
-import Exercise from "./Exercise";
 import TimeoutSession from "../timeoutSession/TimeoutSession";
 
 export default function StudentData() {
@@ -39,11 +38,8 @@ export default function StudentData() {
   const { user, setUser, userName, setUserName } = useContext(AuthContext);
   const [filterValue, setFilterValue] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-const [excerise , setExercise] = useState(false)
 
-const handleExcerise = ()  => {
-setExercise((prev) => !prev)
-}
+
 
   const handleFilter = () => {
     setShowFilter((prev) => !prev);
