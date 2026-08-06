@@ -17,7 +17,8 @@ import LoadingSpinner from "./LoadingSpinner";
 import LeftSidebar from "../Sidebar/LeftSidebar";
 import { AuthContext } from "../../context/AuthProvider";
 import CourseFilter from "./CourseFilter";
-import TimeoutSession from "../timeoutSession/TimeoutSession";
+import TimeoutPopup from "../timeoutSession/TimeoutPopup.jsx";
+
 
 export default function StudentData() {
   const [students, setStudents] = useState([]);
@@ -216,8 +217,8 @@ export default function StudentData() {
       <div className={styles.sidebar}>
         <LeftSidebar />
       </div>
-     {/* <button onClick={handleExcerise}>Click me for excise</button> */}
-      <TimeoutSession/>
+    
+    <TimeoutPopup/>
       {user !== "viewer" && (
         <AddStudent
           fetchData={fetchData}

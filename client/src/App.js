@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword'
 import ForgetPassword from './pages/loginForm/ForgetPassword'
 import InviteUser from './pages/inviteUser/InviteUser'
 import AuthProvider from './context/AuthProvider'
+import LogoutPage from './components/timeoutSession/LogoutPage'
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8000'
 
@@ -41,6 +42,7 @@ function App() {
           <Route path='/forget-password' element={<ForgetPassword/>}/>
             <Route path='/invite-user' element={<InviteUser/>}/>
             <Route path ='/invite-user-register' element={<Register/>}/>
+              <Route path ='/logout' element={<LogoutPage/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>

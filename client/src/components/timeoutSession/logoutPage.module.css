@@ -1,0 +1,36 @@
+.logoutCont{
+    background-color: rgb(240, 243, 242);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+width: 100vw;
+height: 90vh;
+overflow:hidden;
+
+}
+
+.logout{
+    background-color: rgb(206, 218, 218);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20rem;
+    height: 20rem;
+    align-items: center;
+    gap:15px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-style: dashed;
+    border-color: rgba(110, 119, 119, 0.538);
+}
+.signInBtn{
+    background-color: rgb(25, 120, 65);
+    width: 5rem;
+    cursor: pointer;
+    border-style:dashed ;
+
+    
+}
+.signInBtn:hover{
+    background-color: rgb(13, 141, 66);
+    color: rgb(248, 252, 252);
+}

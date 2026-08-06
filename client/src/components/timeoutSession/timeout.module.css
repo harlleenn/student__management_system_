@@ -1,0 +1,34 @@
+
+ .timerCont {
+  position: fixed;   
+  top: 0px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;    /* you're missing this — centers vertically too */
+  backdrop-filter: blur(2px);
+  z-index: 10;           /* sits above your page content */
+}
+.timer{
+ background-color: rgba(23, 206, 139, 0.54);
+    width: 27rem;
+    display: flex;
+    height: 14rem;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+}
+.timerBtnCont{
+    display: flex;
+    gap: 5px;
+}
+.cancelBtn{
+    background-color: rgb(17, 141, 52);
+}
+.logoutBtn{
+    background-color: rgb(166, 9, 9);
+}
