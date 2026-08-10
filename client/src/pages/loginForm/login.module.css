@@ -98,9 +98,15 @@ label {
   
   justify-content: space-between;
   position: relative;
+ 
 }
 .passwordHide{
   position: absolute;
   right: 10px;
   top: 15px;
+
+}
+.passInput{
+   border-color: rgb(227, 11, 11);
+  border-style: solid;
 }

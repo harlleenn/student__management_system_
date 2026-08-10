@@ -83,7 +83,11 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
-app.get("/students", authenticateToken, async  (req, res) => {
+/* =========================================================
+   GET ROUTES
+   ========================================================= */
+
+app.get("/students", authenticateToken, async (req, res) => {
   const search = req.query.search || "";
   const selectedCourse = req.query.course || "";
   const page = Number(req.query.page) || 1;
@@ -106,14 +110,54 @@ app.get("/students", authenticateToken, async  (req, res) => {
 
   sql = sql + `LIMIT ? OFFSET ?`;
   params.push(limit, offset);
-  
-  try{
-    const [results] = await  db.promise().query(sql , params)
-    res.json(results)
-  }catch(error) {
-    res.json({messsage:"there was an error getting your search"})
+
+  try {
+    const [results] = await db.promise().query(sql, params);
+    res.json(results);
+  } catch (error) {
+    res.json({ messsage: "there was an error getting your search" });
   }
 });
+
+app.get("/students/:id/images", (req, res) => {
+  db.query(
+    `SELECT student_image
+     FROM students
+     WHERE id = ?`,
+    [req.params.id],
+    (err, results) => {
+      if (results.length === 0) {
+        return res.send(404).json({
+          message: "no image has been uploaded",
+        });
+      }
+
+      res.set("Content-Type", "image/jpeg");
+
+      res.send(results[0].student_image);
+    },
+  );
+});
+
+app.get("/invite-user", async (req, res) => {
+  const userId = req.query.id;
+  try {
+    const [rows] = await db
+      .promise()
+      .query(
+        "SELECT *  from invitedUsers where id = ? ORDER BY ID DESC LIMIT 1",
+        [userId],
+      );
+    // console.log(rows, "these are the rows")
+    res.json({ userRole: rows[0].userRole, email: rows[0].email });
+  } catch (error) {
+    res.status(500).json({ message: "did not get user email" });
+  }
+});
+
+/* =========================================================
+   POST ROUTES
+   ========================================================= */
 
 // app.post("/students", studentValidation, studentValidate, async (req, res) => {
 //   const { name, email, course } = req.body;
@@ -139,52 +183,26 @@ app.post("/students", studentValidation, studentValidate, async (req, res) => {
   const { name, email, course } = req.body;
 
   try {
-    const [results] = await db.promise().query(
-      "SELECT * FROM students WHERE email = ?",
-      [email]
-    );
+    const [results] = await db
+      .promise()
+      .query("SELECT * FROM students WHERE email = ?", [email]);
 
     if (results.length > 0) {
       return res.status(400).json({ message: "This email already exists" });
     }
 
-    const [insertResult] = await db.promise().query(
-      "INSERT INTO students (name, course, email) VALUES (?, ?, ?)",
-      [name, course, email]
-    );
+    const [insertResult] = await db
+      .promise()
+      .query("INSERT INTO students (name, course, email) VALUES (?, ?, ?)", [
+        name,
+        course,
+        email,
+      ]);
 
     return res.json({ message: "Student added", id: insertResult.insertId });
-
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-});
-app.delete("/students/:id", (req, res) => {
-  db.query(
-    "DELETE FROM students WHERE id = ?",
-    [req.params.id],
-    (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.json({ message: "Student has been deleted successfully" });
-    },
-  );
-});
-
-app.put("/students/:id", studentValidation, studentValidate, (req, res) => {
-  const studentId = req.params.id;
-  const { name, email, course } = req.body;
-  db.query(
-    "UPDATE students SET name = ?, email = ?, course = ? WHERE id = ?",
-    [name, email, course, studentId],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.json({ message: "Student updated successfully", id: studentId });
-    },
-  );
 });
 
 app.post("/auth/register", registerValidation, validate, async (req, res) => {
@@ -221,65 +239,53 @@ app.post("/auth/register", registerValidation, validate, async (req, res) => {
     },
   );
 });
-app.post("/auth/login", loginLimiter, (req, res) => {
+
+app.post("/auth/login", loginLimiter, async (req, res) => {
   const { email, password } = req.body;
-  db.query(
-    "SELECT * FROM users WHERE email = ?",
-    [email],
-    async (err, results) => {
-      if (err) return res.status(500).json({ error: err.message });
+  try {
+    const [results] = await db
+      .promise()
+      .query("Select * from users where email = ?", [email]);
+    if (results.length === 0) {
+      return res.status(401).json({ message: "User not found" });
+    }
 
-      if (results.length === 0)
-        return res.status(401).json({ message: "User not found" });
- 
-      const user = results[0]; // array of results first object
-     
-      if (user.lock_until && new Date(user.lock_until) > new Date()) {
-        return res.status(403).json({
-          message: "Account locked. please try again later.",
-        });
-      }
-      const isMatch = await bcrypt.compare(password, results[0].password);
+    const user = results[0];
+    console.log(user.lock_until, "this is the value for lock until")
+    if (user.lock_until && new Date(user.lock_until) > new Date()) {
+      console.log(user.lock_until && new Date(user.lock_until) > new Date() , "this is for if locked")
+      return res.status(403).json({
+        message: "Account locked. please try again later.",
+      });
+    }else if (user.lock_until && new Date(user.lock_until) <= new Date()) {
+      console.log(user.lock_until && new Date(user.lock_until) <= new Date(), "this is for time has passed")
+      await db.promise().query("Update users set failed_attempts = 0 , lock_until = NUll where email = ?" , [email])
+      console.log("time has passed rest back to 0")
+      // console.log(user)
+         user.failed_attempts = 0; 
+    }
 
-      console.log(isMatch);
-
-      // if (!isMatch) {
-      //   return res.status(401).json({
-      //     message: "Invalid password",
-      //   });
-      // }
-      if (!isMatch) {
-        const failedAttempts = user.failed_attempts + 1;
-
-        if (failedAttempts >= 5) {
-          const lockUntil = new Date(Date.now() + 15 * 60 * 1000);
-
-          db.query(
-            `UPDATE users
-       SET failed_attempts = ?,
-           lock_until = ?
-
-           
-       WHERE email = ?`,
+    const passwordMatch = await bcrypt.compare(password, results[0].password);
+    console.log(passwordMatch, "this is for the passowrd matches or not");
+    if (!passwordMatch) {
+      const failedAttempts = user.failed_attempts + 1;
+      if (failedAttempts >= 4) {
+        const lockUntil = new Date(Date.now() + 15 * 60 * 1000);
+        const [rows] = await db
+          .promise()
+          .query(
+            "Update users set failed_attempts = ? ,lock_until = ? where email = ?",
             [failedAttempts, lockUntil, email],
-          ); // need to refresh after a certain time once 15 mins done so that user can again enter
-
-          return res.status(403).json({
-            message: "Too many failed attempts. Account locked for 15 minutes.",
-          });
-        }
-
-        db.query(
-          `UPDATE users
-     SET failed_attempts = ?
-     WHERE email = ?`,
-          [failedAttempts, email],
-        );
-
-        return res.status(401).json({
-          message: "Invalid password",
+          );
+          console.log(rows , 'this is the value that even if wrong no update')
+        return res.status(403).json({
+          message: "Too many failed attempts. Account locked for 15 minutes.",
         });
       }
+      const [rows] = await db.promise().query("Update users set failed_attempts = ? where email = ?", [failedAttempts, email])
+      return res.status(401).json({ message: "Invalid password" });
+
+    } 
 
       const token = jwt.sign(
         { email: results[0].email }, // payload what we want to seralize ig to convert? into json or the data ig that we have
@@ -288,7 +294,11 @@ app.post("/auth/login", loginLimiter, (req, res) => {
       );
 
       const refreshToken = jwt.sign(
-        { email: results[0].email , user_role: results[0].user_role , name: results[0].name },
+        {
+          email: results[0].email,
+          user_role: results[0].user_role,
+          name: results[0].name,
+        },
         process.env.REFRESH_JWT_SECRET,
         { expiresIn: "40w" },
       );
@@ -309,24 +319,26 @@ app.post("/auth/login", loginLimiter, (req, res) => {
         secure: false, // use of secure
         sameSite: "strict",
       });
-      
+
       const userInfo = {
-        name:user.name,
-        email:user.email,
-        user_role:user.user_role
-      }
+        name: user.name,
+        email: user.email,
+        user_role: user.user_role,
+      };
       res.json({
         message: "Login successful",
         token: token,
         user_info: userInfo,
+        password: password,
       });
-      // const token = Math.random().toString(36).slice(2);
-      // res.cookie("tokenShownInName", token, {
-      //   httpOnly: true,
-      // });
-    },
-  );
+    
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "The password or username you have written is wrong" });
+  }
 });
+
 app.post("/auth/logout", (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
@@ -343,6 +355,7 @@ app.post("/auth/logout", (req, res) => {
     res.sendStatus(500);
   }
 });
+
 app.post("/refresh", (req, res) => {
   const refreshToken = req.cookies.refreshToken; // it is req.cookies in the header
 
@@ -374,8 +387,8 @@ app.post("/refresh", (req, res) => {
           process.env.ACCESS_JWT_SECRET,
           { expiresIn: "15m" },
         );
-        const userRoleValueFromDecoded = decoded.user_role
-        const userNameFromDecoded = decoded.name
+        const userRoleValueFromDecoded = decoded.user_role;
+        const userNameFromDecoded = decoded.name;
         res.json({
           userRoleValueFromDecoded,
           accessToken,
@@ -390,52 +403,6 @@ app.post("/refresh", (req, res) => {
   }
 });
 
-// app.put("/upload" , upload.single("image"),(req,res) => {
-//   const imageBuffer = req.file ? req.file.buffer : null
-
-app.get("/students/:id/images", (req, res) => {
-  db.query(
-    `SELECT student_image
-     FROM students
-     WHERE id = ?`,
-    [req.params.id],
-    (err, results) => {
-      if (results.length === 0) {
-        return res.send(404).json({
-          message: "no image has been uploaded",
-        });
-      }
-
-      res.set("Content-Type", "image/jpeg");
-
-      res.send(results[0].student_image);
-    },
-  );
-});
-app.put("/students/:id/image", upload.single("image"), (req, res) => {
-  const studentId = req.params.id;
-  const imageBuffer = req.file ? req.file.buffer : null;
-  console.log(req.params.id);
-
-  db.query(
-    `UPDATE students
-       SET student_image = ?
-       WHERE id = ?`,
-    [imageBuffer, studentId],
-    (err) => {
-      if (err) {
-        return res.status(500).json({
-          error: "there has been an error",
-        });
-      }
-
-      res.json({
-        message: "Image updated",
-      });
-    },
-  );
-});
-
 app.post("/invite-user", async (req, res) => {
   const email = req.body.email;
   const userRole = req.body.userRole; // i have the value i need to show
@@ -443,12 +410,14 @@ app.post("/invite-user", async (req, res) => {
   console.log(userRole, "this should be the user role that has been selected");
 
   try {
-    const [rows] = await db.promise().query("INSERT into invitedUsers (email, userRole) VALUES(?, ?)", [
-      email,
-      userRole,
-    ]);
-  
-    const invitedUserId = rows.insertId
+    const [rows] = await db
+      .promise()
+      .query("INSERT into invitedUsers (email, userRole) VALUES(?, ?)", [
+        email,
+        userRole,
+      ]);
+
+    const invitedUserId = rows.insertId;
     const invitationLink = `http://localhost:3000/invite-user-register?id=${invitedUserId}`;
     await sendInviteEmail(email, invitationLink);
 
@@ -459,21 +428,6 @@ app.post("/invite-user", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong." });
-  }
-});
-
-app.get("/invite-user", async (req, res) => {
-  const userId = req.query.id
-  try {
-    const [rows] = await db
-      .promise()
-      .query("SELECT *  from invitedUsers where id = ? ORDER BY ID DESC LIMIT 1" , [userId]);
-      // console.log(rows, "these are the rows")
-    res.json({ userRole: rows[0].userRole, email: rows[0].email });
-    
-    
-  } catch (error) {
-    res.status(500).json({ message: "did not get user email" });
   }
 });
 
@@ -534,6 +488,74 @@ app.post(
     }
   },
 );
+
+/* =========================================================
+   PUT ROUTES
+   ========================================================= */
+
+// app.put("/upload" , upload.single("image"),(req,res) => {
+//   const imageBuffer = req.file ? req.file.buffer : null
+
+app.put("/students/:id", studentValidation, studentValidate, (req, res) => {
+  const studentId = req.params.id;
+  const { name, email, course } = req.body;
+  db.query(
+    "UPDATE students SET name = ?, email = ?, course = ? WHERE id = ?",
+    [name, email, course, studentId],
+    (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: "Student updated successfully", id: studentId });
+    },
+  );
+});
+
+app.put("/students/:id/image", upload.single("image"), (req, res) => {
+  const studentId = req.params.id;
+  const imageBuffer = req.file ? req.file.buffer : null;
+  console.log(req.params.id);
+
+  db.query(
+    `UPDATE students
+       SET student_image = ?
+       WHERE id = ?`,
+    [imageBuffer, studentId],
+    (err) => {
+      if (err) {
+        return res.status(500).json({
+          error: "there has been an error",
+        });
+      }
+
+      res.json({
+        message: "Image updated",
+      });
+    },
+  );
+});
+
+/* =========================================================
+   DELETE ROUTES
+   ========================================================= */
+
+app.delete("/students/:id", (req, res) => {
+  db.query(
+    "DELETE FROM students WHERE id = ?",
+    [req.params.id],
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: "Student has been deleted successfully" });
+    },
+  );
+});
+
+/* =========================================================
+   SERVER STARTUP
+   ========================================================= */
+
 db.connect((err) => {
   if (err) {
     console.log("DB connection failed:", err);

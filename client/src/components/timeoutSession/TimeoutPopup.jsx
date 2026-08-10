@@ -12,7 +12,7 @@ export default function TimeoutPopup() {
       timer = setTimeout(() => {
         setShowPopup(true);
         console.log("nothing has been touched so i am coming after 5 seconds");
-      }, 3000);
+      }, 	1800000);
     };
     const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
     events.forEach((event) => window.addEventListener(event, resetTimer));

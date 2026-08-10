@@ -9,6 +9,7 @@ import ResetPassword from "../ResetPassword/ResetPassword";
 import { Eye, EyeOff } from "lucide-react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { toast, ToastContainer } from "react-toastify";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,6 +50,7 @@ export default function Login() {
         navigate("/student");
       })
       .catch((error) => {
+        toast.error(error.response.data.message)
         setError(error.response.data.message);
         console.log(error.response.data.message);
       });
@@ -56,6 +58,7 @@ export default function Login() {
   return (
     <div className={styles.loginCont}>
       <div className={styles.login}>
+        <ToastContainer/>
         <div className={styles.message}>
           Welcome Back 
           <div>Login to your Student Acc</div>
@@ -77,9 +80,15 @@ export default function Login() {
               <input
                 placeholder="Enter password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                      setPassword(e.target.value);
+                  setError("")
+                }
+                
+                }
                 required
                 type={show ? "text" : "password"}
+                className={` ${error ? styles.passInput : ""}`}
               />
 
               <div className={styles.passwordHide}>
@@ -94,11 +103,11 @@ export default function Login() {
 
           <button>Login</button>
         </form>
-        {error && <div className={styles.loginError}>{error}</div>}
+        {/* {error && <div className={styles.loginError}>{error}</div>} */}
         <div className={styles.forgetPass}>
-          <div>
+          {/* <div>
             Don't have an account? <a href="/register">Sign up here</a>
-          </div>
+          </div> */}
           <div className={styles.forgetPassCont}>
             <a href="/forget-password" className={styles.forgetLink}>
               <button onClick={handleClick}>Forget Password</button>
